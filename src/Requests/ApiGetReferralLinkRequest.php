@@ -76,6 +76,13 @@ class ApiGetReferralLinkRequest extends AbstractRequest
     private $text;
 
     /**
+     * 美团授权openid.
+     * @var string
+     */
+    private $openid;
+
+    /**
+     * 请求参数.
      * 链接类型列表，(linkType和linkTypeList必传一个，linkType和linkTypeList都传时，只处理linkTypeList)。枚举值：1 H5长链接；2 H5短链接；3 deeplink(唤起)链接；4 微信小程序唤起路径；5 团口令；6 小程序码;注：团口令、h5短链、小程序二维码有效期60天 ，其余无限制
      * 是否必须：否.
      * @var array<int>
@@ -88,6 +95,17 @@ class ApiGetReferralLinkRequest extends AbstractRequest
      * @var array<string>
      */
     private $textList;
+
+    public function getOpenid()
+    {
+        return $this->openid;
+    }
+
+    public function setOpenid($openid)
+    {
+        $this->openid = $openid;
+        $this->apiParams['openid'] = $openid;
+    }
 
     /**
      * 请求参数.
