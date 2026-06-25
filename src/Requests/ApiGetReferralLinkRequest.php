@@ -70,9 +70,26 @@ class ApiGetReferralLinkRequest extends AbstractRequest
     private $text;
 
     /**
+     * 美团授权openid.
+     * @var string
+     */
+    private $openid;
+
+    /**
      * 请求参数.
      */
     private $apiParams = [];
+
+    public function getOpenid()
+    {
+        return $this->openid;
+    }
+
+    public function setOpenid($openid)
+    {
+        $this->openid = $openid;
+        $this->apiParams['openid'] = $openid;
+    }
 
     /**
      * @return mixed
