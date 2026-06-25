@@ -86,178 +86,276 @@ class ApiQueryOrderRequest extends AbstractRequest
     private $platform;
 
     /**
+     * 订单品类
+     * 1）当platform为1，当businessLine为11时，
+     * 枚举值支持：
+     * 大型连锁商超便利店(12)，
+     * 小型商超便利店(14)，
+     * 线上便利店(21)，
+     * 日百服饰(128)，
+     * 数码家电(106)，
+     * 美妆日化(107)，
+     * 母婴玩具(108)，
+     * 宠物(110)，
+     * 生鲜食材(24)，
+     * 鲜花(16)，
+     * 水果(15)，
+     * 酒饮(26)，
+     * 休闲食品(25)，
+     * 旗舰店(137)，
+     * 其他(-2)；.
+     *
+     * 2）当platform为1，当businessLine为9时，
+     * 枚举值支持：
+     * 进群(1)，
+     * 下单(2)，
+     * 首关注(3)；
+     *
+     * 3）当platform为2，当businessLine为3时，
+     * 枚举值支持：
+     * 酒店(209)，
+     * 非标住宿(2327)；
+     *
+     * 4）当platform为2，当businessLine为2时，
+     * 枚举值支持：
+     * 休闲娱乐(3)，
+     * 结婚(338)，
+     * 教育培训(289)，
+     * 养车/用车(390)，
+     * 运动健身(206)，
+     * 家居(600)，
+     * 购物(379)，
+     * 亲子(389)，
+     * 医疗健康(450)，
+     * 生活服务(4)，
+     * K歌(1853)，
+     * 宠物(1861)，
+     * 其他(-1)
+     *
+     * 4）当businessLine为999时，
+     * 枚举值支持
+     * 到餐-纯新用户(1001),
+     * 到餐-召回用户(1002),
+     * 到综-纯新用户(1003),
+     * 到综-召回用户(1004),
+     * 闪购-纯新用户(1005),
+     * 闪购-召回用户(1006),
+     * 外卖-纯新用户(1007),
+     * 外卖-沉默用户(1008),
+     * 外卖-预警用户(1009),
+     * 外卖-流失用户(1010)
+     *
+     * 是否必须：否.
+     * @var array<int>
+     */
+    private $categoryIds;
+
+    /**
+     * 活动物料id，我要推广-活动推广中第一列的id信息，不传则返回所有actId的数据，省钱包订单不传
+     * 是否必须：否.
+     * @var int
+     */
+    private $actId;
+
+    /**
+     * 交易类型，1表示CPS，2表示CPA
+     * 是否必须：否.
+     * @var int
+     */
+    private $tradeType;
+
+    /**
+     * 订单分页查询方案选择，不填则默认为1。
+     *
+     * 1 分页查询（最多能查询到1万条订单），当选择本查询方案，page参数不能为空。
+     * 此查询方式后续不再维护，建议使用2逐页查询。
+     *
+     * 2 逐页查询（不限制查询订单数，只能逐页查询，不能指定页数），
+     * 当选择本查询方案，需配合scrollId参数使用，省钱包查询仅支持2
+     *
+     * 是否必须：否.
+     * @var int
+     */
+    private $searchType;
+
+    /**
+     * 省份名称列表.
+     *
+     * 省份名称列表，多个用英文逗号隔开，最多支持5个。
+     *
+     * 是否必须：否.
+     * @var array<string>
+     */
+    private $cityNames;
+
+    /**
      * 请求参数.
      */
     private $apiParams = [];
 
-    /**
-     * @return mixed
-     */
     public function getSid()
     {
         return $this->sid;
     }
 
-    /**
-     * @return mixed
-     */
     public function getBusinessLine()
     {
         return $this->businessLine;
     }
 
-    /**
-     * @return mixed
-     */
     public function getOrderId()
     {
         return $this->orderId;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStartTime()
     {
         return $this->startTime;
     }
 
-    /**
-     * @return mixed
-     */
     public function getEndTime()
     {
         return $this->endTime;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPage()
     {
         return $this->page;
     }
 
-    /**
-     * @return mixed
-     */
     public function getLimit()
     {
         return $this->limit;
     }
 
-    /**
-     * @return mixed
-     */
     public function getQueryTimeType()
     {
         return $this->queryTimeType;
     }
 
-    /**
-     * @return mixed
-     */
     public function getScrollId()
     {
         return $this->scrollId;
     }
 
-    /**
-     * @return int
-     */
     public function getPlatform()
     {
         return $this->platform;
     }
 
-    /**
-     * @param int $platform
-     */
     public function setPlatform($platform)
     {
         $this->platform = $platform;
         $this->apiParams['platform'] = $platform;
     }
 
-    /**
-     * @param mixed $sid
-     */
     public function setSid($sid)
     {
         $this->sid = $sid;
         $this->apiParams['sid'] = $sid;
     }
 
-    /**
-     * @param mixed $businessLine
-     */
     public function setBusinessLine($businessLine)
     {
         $this->businessLine = $businessLine;
         $this->apiParams['businessLine'] = $businessLine;
     }
 
-    /**
-     * @param mixed $orderId
-     */
     public function setOrderId($orderId)
     {
         $this->orderId = $orderId;
         $this->apiParams['orderId'] = $orderId;
     }
 
-    /**
-     * @param mixed $startTime
-     */
     public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
         $this->apiParams['startTime'] = $startTime;
     }
 
-    /**
-     * @param mixed $endTime
-     */
     public function setEndTime($endTime)
     {
         $this->endTime = $endTime;
         $this->apiParams['endTime'] = $endTime;
     }
 
-    /**
-     * @param mixed $page
-     */
     public function setPage($page)
     {
         $this->page = $page;
         $this->apiParams['page'] = $page;
     }
 
-    /**
-     * @param mixed $limit
-     */
     public function setLimit($limit)
     {
         $this->limit = $limit;
         $this->apiParams['limit'] = $limit;
     }
 
-    /**
-     * @param mixed $queryTimeType
-     */
     public function setQueryTimeType($queryTimeType)
     {
         $this->queryTimeType = $queryTimeType;
         $this->apiParams['queryTimeType'] = $queryTimeType;
     }
 
-    /**
-     * @param mixed $scrollId
-     */
     public function setScrollId($scrollId)
     {
         $this->scrollId = $scrollId;
         $this->apiParams['scrollId'] = $scrollId;
+    }
+
+    public function getCategoryIds()
+    {
+        return $this->categoryIds;
+    }
+
+    public function setCategoryIds($categoryIds)
+    {
+        $this->categoryIds = $categoryIds;
+        $this->apiParams['categoryIds'] = $categoryIds;
+    }
+
+    public function getActId()
+    {
+        return $this->actId;
+    }
+
+    public function setActId($actId)
+    {
+        $this->actId = $actId;
+        $this->apiParams['actId'] = $actId;
+    }
+
+    public function getTradeType()
+    {
+        return $this->tradeType;
+    }
+
+    public function setTradeType($tradeType)
+    {
+        $this->tradeType = $tradeType;
+        $this->apiParams['tradeType'] = $tradeType;
+    }
+
+    public function getSearchType()
+    {
+        return $this->searchType;
+    }
+
+    public function setSearchType($searchType)
+    {
+        $this->searchType = $searchType;
+        $this->apiParams['searchType'] = $searchType;
+    }
+
+    public function getCityNames()
+    {
+        return $this->cityNames;
+    }
+
+    public function setCityNames($cityNames)
+    {
+        $this->cityNames = $cityNames;
+        $this->apiParams['cityNames'] = $cityNames;
     }
 
     public function getApiParams(): array

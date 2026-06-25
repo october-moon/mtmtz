@@ -64,7 +64,13 @@ class ApiGetReferralLinkRequest extends AbstractRequest
     private $shareTextType;
 
     /**
-     * 活动链接.
+     * 单个转链链接
+     * 只支持到家（外卖商品券、医药）商品链接、到店（到店美食、休闲生活、酒店、门票）商品链接、活动物料链接。
+     *
+     * 活动链接，即想要推广的目标链接
+     * 出参会返回成自己可推的链接，限定为当前可推广的活动链接或者商品券链接，请求内容尽量保持在200字以内，
+     * 链接类型目前支持长链、短链、deeplink(唤起)链接、圈圈小程序唤起路径、美团小程序活动链接
+     *
      * @var string
      */
     private $text;
@@ -77,8 +83,18 @@ class ApiGetReferralLinkRequest extends AbstractRequest
 
     /**
      * 请求参数.
+     * 链接类型列表，(linkType和linkTypeList必传一个，linkType和linkTypeList都传时，只处理linkTypeList)。枚举值：1 H5长链接；2 H5短链接；3 deeplink(唤起)链接；4 微信小程序唤起路径；5 团口令；6 小程序码;注：团口令、h5短链、小程序二维码有效期60天 ，其余无限制
+     * 是否必须：否.
+     * @var array<int>
      */
-    private $apiParams = [];
+    private $linkTypeList;
+
+    /**
+     * 批量转链链接。只支持到家（外卖商品券、医药）商品链接、到店（到店美食、休闲生活、酒店、门票）商品链接、活动物料链接。活动链接，即想要推广的目标链接，出参会返回成自己可推的链接，限定为当前可推广的活动链接或者商品券链接，请求内容尽量保持在200字以内，请求链接数量控制在20条以下, 链接类型目前支持长链、短链、deeplink(唤起)链接、圈圈小程序唤起路径、美团小程序活动链接
+     * 是否必须：否.
+     * @var array<string>
+     */
+    private $textList;
 
     public function getOpenid()
     {
@@ -92,101 +108,70 @@ class ApiGetReferralLinkRequest extends AbstractRequest
     }
 
     /**
-     * @return mixed
+     * 请求参数.
      */
+    private $apiParams = [];
+
     public function getActId()
     {
         return $this->actId;
     }
 
-    /**
-     * @param mixed $actId
-     */
     public function setActId($actId)
     {
         $this->actId = $actId;
         $this->apiParams['actId'] = $actId;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSkuViewId()
     {
         return $this->skuViewId;
     }
 
-    /**
-     * @param mixed $skuViewId
-     */
     public function setSkuViewId($skuViewId)
     {
         $this->skuViewId = $skuViewId;
         $this->apiParams['skuViewId'] = $skuViewId;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSid()
     {
         return $this->sid;
     }
 
-    /**
-     * @param mixed $sid
-     */
     public function setSid($sid)
     {
         $this->sid = $sid;
         $this->apiParams['sid'] = $sid;
     }
 
-    /**
-     * @return mixed
-     */
     public function getLinkType()
     {
         return $this->linkType;
     }
 
-    /**
-     * @param mixed $linkType
-     */
     public function setLinkType($linkType)
     {
         $this->linkType = $linkType;
         $this->apiParams['linkType'] = $linkType;
     }
 
-    /**
-     * @return int
-     */
     public function getPlatform()
     {
         return $this->platform;
     }
 
-    /**
-     * @param int $platform
-     */
     public function setPlatform($platform)
     {
         $this->platform = $platform;
         $this->apiParams['platform'] = $platform;
     }
 
-    /**
-     * @return int
-     */
     public function getBizLine()
     {
         return $this->bizLine;
     }
 
-    /**
-     * @param int $bizLine
-     */
     public function setBizLine($bizLine)
     {
         $this->bizLine = $bizLine;
@@ -198,9 +183,6 @@ class ApiGetReferralLinkRequest extends AbstractRequest
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
     public function setText($text)
     {
         $this->text = $text;
@@ -216,6 +198,28 @@ class ApiGetReferralLinkRequest extends AbstractRequest
     {
         $this->shareTextType = $shareTextType;
         $this->apiParams['shareTextType'] = $shareTextType;
+    }
+
+    public function setLinkTypeList($linkTypeList)
+    {
+        $this->linkTypeList = $linkTypeList;
+        $this->apiParams['linkTypeList'] = $linkTypeList;
+    }
+
+    public function getLinkTypeList(): array
+    {
+        return $this->linkTypeList;
+    }
+
+    public function setTextList($textList)
+    {
+        $this->textList = $textList;
+        $this->apiParams['textList'] = $textList;
+    }
+
+    public function getTextList(): array
+    {
+        return $this->textList;
     }
 
     public function getApiParams(): array
